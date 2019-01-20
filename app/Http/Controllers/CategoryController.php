@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditCatRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\CatalogRequest;
 use App\Catalog;
 use App\Product;
@@ -13,11 +14,11 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $cat = Catalog::select('id', 'parent_id', 'name', 'create_at', 'keyword')->orderBy('id', 'DESC')->paginate(5);
+        $cat = Catalog::select('id', 'parent_id', 'name', 'created_at', 'keyword')->orderBy('id', 'DESC')->paginate(5);
         $name = $request->search;
         if(!empty($name))
         {
-            $cat = Catalog::where('name', 'like', '%' .$name. '%')->get()->toArray();
+            $cat = Catalog::where('name', 'like', '%' .$name. '%')->get()->orderBy->toArray();
             return view('admin/catalog.catalog')->with(['cat'=>$cat]);
         }
         return view('admin/catalog.catalog', ['cat' => $cat]);
@@ -35,13 +36,19 @@ class CategoryController extends Controller
     {
         //Tu tao Request kiem tra lai CatalogRequest
         $cat = new Catalog;
-        $cat->name = $request->name;;
+        $cat->name = $request->name;
         $cat->parent_id = $request->parentid;
         $cat->location = $request->orders;
         $cat->keyword = $request->keyword;
+        $cat->created_at = now();
+        if(!empty($request->icon)){
+            $avatar= $request->file('icon')->getClientOriginalName();
+            $request->file('icon')->move('upload/category/icon',$avatar);
+            $cat->icon=$avatar;
+            $cat->save();
+        }
         $cat->save();
         return redirect('admin/catalog')->with(['status' => 'Insert Catalog Success!'])->with(['color' => 'success']);
-
 
     }
 
@@ -63,7 +70,17 @@ class CategoryController extends Controller
         $cat->parent_id = $request->parentid;
         $cat->location = $request->orders;
         $cat->keyword = $request->keyword;
-        $cat->update_at = now();
+        $cat->updated_at = now();
+        if (!empty($request->file('icon'))){
+            File::delete('upload/category/icon/'.$cat->icon);
+            $cat->delete($id);
+            $avatar= $request->file('icon')->getClientOriginalName();
+            $cat->icon=$avatar;
+            $request->file('icon')->move('upload/category/icon',$avatar);
+
+        }else{
+            echo "Không có ảnh";
+        }
         $cat->save();
 
         return redirect('admin/catalog')->with(['status' => 'Edit Catalog Success!'])->with(['color' => 'info']);

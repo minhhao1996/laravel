@@ -10,7 +10,7 @@ class Product extends Model
 
     protected $fillable = [
         'id', 'cat_id','maker_id', 'name','code','contents','discount','avatar',
-        'created_at','views','title','warranty','total','buyed','gifts','status', 'update_at'
+        'created_at','views','title','warranty','total','buyed','gifts','status', 'updated_at'
     ];
     public $timestamps= false;
     public function productImage(){

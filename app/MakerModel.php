@@ -8,7 +8,7 @@ class MakerModel extends Model
 {
     protected $table ="makers";
     protected $fillable = [
-        'id', 'name', 'code','keyword', 'create_at','status',
+        'id', 'name', 'code','keyword', 'created_at','status',
     ];
     public $timestamps= false;
 

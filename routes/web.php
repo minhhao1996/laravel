@@ -12,22 +12,100 @@
 */
 /*ADMIN*/
 
-
+Route::get('/',[
+    'as'=>'home',
+    'uses'=>'HomeController@index'
+]);
+Route::get('login', function () {
+    return view('auth.login');
+});
 Auth::routes(['verify' => true]);
 
-Route::get('/', function () {
-    return view('home');
+Route::get('/profile', function () {
+    return view('login')->with(['status' => 'Bạn vào!']);
 })->middleware('verified');
-Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['prefix'=>'admin','middleware' => 'auth'], function () {
+Route::get('search}', [
+    'as'=>'MainSearch',
+    'uses'=>'HomeController@search']);
+//Cart
+Route::get('cart',[
+    'as'=>'cart',
+    'uses'=>'CartController@index'
+]);
+Route::get('addCart/{id}/{name}',[
+    'as'=>'addCart',
+    'uses'=>'CartController@addCart'
+]);
+Route::get('removeCart/{id}',[
+    'as'=>'removeCart',
+    'uses'=>'CartController@removeCart'
+]);
+Route::get('updateCart/{id}/{qty}',[
+    'as'=>'updateCart',
+    'uses'=>'CartController@updateCart'
+]);
+//order
+Route::get('check-out', [
+    'as'=>'order',
+    'uses'=>'OrderController@index']);
+
+Route::get('/get-shipping-order', [
+    'as'=>'get-shipping',
+    'uses'=>'OrderController@getShipping']);
+Route::post('postCheckout', [
+    'as'=>'postCheckout',
+    'uses'=>'OrderController@postCheckout']);
+
+//Font_end
+Route::get('category/{id}',[
+        'as'=>'HomeCat',
+        'uses'=>'HomeController@category',
+    ]);
+Route::get('details/{id}',[
+    'as'=>'details',
+    'uses'=>'DetailsController@index',
+]);
+//user
+Route::get('login', function () {
+    return view('auth.login');
+});
+Route::get('profile', [
+    'as'=>'profile',
+    'uses'=>'ProfileController@index']);
+
+Route::get('editProfile/{name}', [
+    'as'=>'editProfile',
+    'uses'=>'ProfileController@editProfile']);
+Route::get('/get-district', [
+    'as'=>'get-district',
+    'uses'=>'ProfileController@getDistrict']);
+
+Route::post('PostProfile/{id}', [
+    'as'=>'PostProfile',
+    'uses'=>'ProfileController@PostProfile']);
+Route::post('editProfile/district', [
+    'as'=>'district',
+    'uses'=>'ProfileController@district']);
+
+
+
+
+
+
+
+
+
+
+Route::group(['prefix'=>'admin','middleware'=>'auth'], function () {
+
     Route::get('/', function () {
         return view('admin.home');
     });
+
  Route::get('login',[
-        'as'=>'login',
-        'uses'=>'UserController@login'
+
     ]);
     Route::post('postLogin',[
         'as'=>'loginPost',
@@ -187,8 +265,3 @@ Route::group(['prefix'=>'admin','middleware' => 'auth'], function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

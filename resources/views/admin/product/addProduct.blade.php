@@ -80,6 +80,7 @@
                                       </span>
                                 @endif
                             </div>
+
                             <div class="form-group">
                                 <label>Chi tiết sản phẩm(*)</label>
                                 <textarea  name="contents" id="detail" class="form-control" ></textarea>
@@ -88,7 +89,8 @@
                                         <strong>{{ $errors->first('contents') }}</strong>
                                       </span>
                                 @endif
-                                <script>CKEDITOR.replace('contents');</script>
+                                <script>
+                                    CKEDITOR.replace('contents');</script>
                             </div>
 
                         </div>

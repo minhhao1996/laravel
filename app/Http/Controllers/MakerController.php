@@ -13,7 +13,7 @@ class MakerController extends Controller
     public function index(Request $request)
     {
 
-        $maker = MakerModel::select('id', 'code', 'name', 'create_at', 'keyword')->orderBy('id', 'DESC')->paginate(5);
+        $maker = MakerModel::select('id', 'code', 'name', 'created_at', 'keyword')->orderBy('id', 'DESC')->paginate(5);
         $name = $request->search;
         if(!empty($name))
         {
@@ -36,7 +36,7 @@ class MakerController extends Controller
         $maker->code = $request->code;
         $maker->keyword = $request->keyword;
         $maker->status = $request->status;
-        $maker->create_at = now();
+        $maker->created_at = now();
         $maker->save();
 
         return redirect('admin/maker')->with(['status' => 'Insert maker Success!'])->with(['color' => 'success']);;
@@ -59,7 +59,7 @@ class MakerController extends Controller
         $eit->code = $request->code;
         $eit->keyword = $request->keyword;
         $eit->status = $request->status;
-        $eit->update_at = now();
+        $eit->updated_at = now();
         $eit->save();
         return redirect('admin/maker')->with(['status' => 'Edit Maker Success!'])->with(['color' => 'info']);;
 

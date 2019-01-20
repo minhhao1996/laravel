@@ -45,12 +45,16 @@
                                 </div>
                                     <div class="form-group">
                                         <label>Vị trí danh mục </label>
-                                        <input type="text" class="form-control" name="orders" style="width:50%" placeholder="Vị trí đặt danh mục">
+                                        <input type="number" min="0" max="20" class="form-control" name="orders" style="width:50%" placeholder="Vị trí đặt danh mục">
                                     </div>
                                     <div class="form-group">
                                         <label>Từ khóa </label>
                                         <input type="text" class="form-control" name="keyword" style="width:50%" placeholder="Tên các từ khóa">
 
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Icon</label>
+                                        <input type="file"  id="image_list" name="icon" multiple=""  style="width: 100%">
                                     </div>
                             </div>
                         </div><!-- /.box -->

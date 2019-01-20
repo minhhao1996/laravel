@@ -8,7 +8,7 @@ class Catalog extends Model
 {
     protected $table ="categorys";
     protected $fillable = [
-        'id', 'parent_id', 'name','local', 'create_at','update_at','status',
+        'id', 'parent_id', 'name','icon','local', 'created_at','updated_at','status',
     ];
     public $timestamps= false;
 

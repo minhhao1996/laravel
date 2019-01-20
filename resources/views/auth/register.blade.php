@@ -2,11 +2,22 @@
 
 @section('content')
 <div class="container">
+    <div class="col-md-3">
+        <div class="menu-account">
+            <h3>
+        <span>
+            Tài khoản
+        </span>
+            </h3>
+            <ul>
+                <li><a href="/dang-nhap.html"><i class="fa fa-sign-in"></i> Đăng nhập</a></li>
+                <li><a href="/dang-ky.html"><i class="fa fa-key"></i> Đăng ký</a></li>
+                <li><a href="/thay-doi-mat-khau.html"><i class="fa fa-key"></i> Quên mật khẩu</a></li>
+            </ul>
+        </div>                    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf

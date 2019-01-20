@@ -5,21 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditProductRequest;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Catalog;
 use App\ProductImage;
 use App\MakerModel;
-use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\Cast\Int_;
+
 
 
 class ProductController extends Controller
 {
     public  function  index(Request $request){
 
-        $product =Product::select('id','name','cat_id','avatar','price','discount','total','status')->paginate(5);
+        $product =Product::select('id','name','cat_id','avatar','price','discount','total','status')->orderBy('id','DESC')->paginate(5);
         $catalogs =Catalog::where('parent_id',0)->get();
         foreach ($catalogs as $row)
         {
@@ -29,13 +27,13 @@ class ProductController extends Controller
         $name = $request->search;
         if(!empty($name))
         {
-            $product = Product::where('name', 'like', '%' .$name. '%')->paginate(5);
-            return view('admin/product.product')->with(['product'=>$product])->with(['catalogs'=>$catalogs]);;
+            $product = Product::where('name', 'like', '%' .$name. '%')->paginate(10);
+            return view('admin/product.product')->with(['product'=>$product])->with(['catalogs'=>$catalogs]);
         }
         $cat = $request->category;
         if(!empty($cat))
         {
-            $product = Product::where('cat_id',$cat)->paginate(5);
+            $product = Product::where('cat_id',$cat)->paginate(10);
             return view('admin/product.product')->with(['product'=>$product])->with(['catalogs'=>$catalogs]);;
         }
 
@@ -68,6 +66,7 @@ class ProductController extends Controller
         $pro->contents=$request->contents;
         $pro->gifts=$request->gifts;
         $pro->warranty=$request->warranty;
+        $pro->created_at=now();
         $pro->avatar=$avatar;
         $request->file('avatar')->move('upload/product/avatar',$avatar);
         $pro->save();
@@ -116,31 +115,31 @@ class ProductController extends Controller
             $row->delete();
         }
         $product = Product::find($id);
-         File::delete('upload/product/avatar/'.$product->avatar);
+        File::delete('upload/product/avatar/'.$product->avatar);
         $product->delete($id);
         return redirect('admin/product')->with(['status' => 'Delete Product Success!'])->with(['color' => 'danger ']);
     }
 
-  public function edit($id)
-  {
-      //lay danh sach danh muc san pham
-      $catalogs =Catalog::where('parent_id',0)->get();
-      foreach ($catalogs as $row)
-      {
-          $subs =Catalog::where('parent_id',$row->id)->get();
-          $row->subs = $subs;
-      }
-      // Lấy Danh sách nhà cung cấp
+    public function edit($id)
+    {
+        //lay danh sach danh muc san pham
+        $catalogs =Catalog::where('parent_id',0)->get();
+        foreach ($catalogs as $row)
+        {
+            $subs =Catalog::where('parent_id',$row->id)->get();
+            $row->subs = $subs;
+        }
+        // Lấy Danh sách nhà cung cấp
 
-      $maker =MakerModel::select('id','name')->get()->toArray();;
-      $data = Product::find($id)->toArray();
-      $product_img = Product::find($id)->productImage;
-      if (!$data) {
-          return redirect('admin/product')->with(['status' => 'Product Fount Not!'])->with(['color' => 'success']);
-      }
+        $maker =MakerModel::select('id','name')->get()->toArray();;
+        $data = Product::find($id)->toArray();
+        $product_img = Product::find($id)->productImage;
+        if (!$data) {
+            return redirect('admin/product')->with(['status' => 'Product Fount Not!'])->with(['color' => 'success']);
+        }
 
-      return view('admin/product.editProduct', compact('maker', 'data', 'catalogs','product_img'));
-  }
+        return view('admin/product.editProduct', compact('maker', 'data', 'catalogs','product_img'));
+    }
 
     public function postEdit(EditProductRequest $request, $id)
     { //kiem tra bang request mac dinh valitor
@@ -156,7 +155,7 @@ class ProductController extends Controller
         $pro->total=$request->total;
         $pro->gifts=$request->gifts;
         $pro->warranty=$request->warranty;
-        $pro->update_at = now();
+        $pro->updated_at = now();
 
         if (!empty($request->file('avatar'))){
             File::delete('upload/product/avatar/'.$pro->avatar);
@@ -207,15 +206,15 @@ class ProductController extends Controller
 
     }
     public function delImage(Request $request){
-         $id=$request->idImage;
-         $image=ProductImage::find($id);
-            if (!empty($image)){
-                $img='upload/product/detail/'.$image->file_name;
-                if(File::exists($img)){
-                     File::delete($img);
-               }
-               $image->delete();
+        $id=$request->idImage;
+        $image=ProductImage::find($id);
+        if (!empty($image)){
+            $img='upload/product/detail/'.$image->file_name;
+            if(File::exists($img)){
+                File::delete($img);
             }
+            $image->delete();
+        }
         return "OK";
     }
     public function status($id){

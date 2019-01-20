@@ -21,10 +21,9 @@
         <link rel="stylesheet" href="{{ asset('css/AdminLTE.css') }}">
         <!-- AdminLTE Skins. Choose a skin from the css/skins-->
         <link rel="stylesheet" href="{{asset('css/_all-skins.min.css')}}">
-
+        <script src="ckeditor/ckeditor.js"></script>
         <script src="{{asset('js/loader.js')}}"></script>
-        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-        <script> CKEDITOR.replace('detail'); </script>
+
 
         <link id="load-css-0" rel="stylesheet" type="text/css"
               href="https://www.gstatic.com/charts/45/css/util/util.css">
@@ -103,11 +102,7 @@
                         <i class="fa fa-bar-chart"></i> <span>Thống kê</span>
                     </a>
                 </li>
-                <!-- <li class="treeview">
-                    <a href="http://[::1]/TTTN-Green/admin">
-                        <i class="fa fa-bell"></i> <span>Thông báo</span>
-                    </a>
-                </li> -->
+
                 <li class="treeview">
                     <a href="http://[::1]/TTTN-Green/admin/contact">
                         <i class="fa fa-envelope"></i> <span>Liên hệ</span>
@@ -192,14 +187,12 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="admin/user/logout.html"><i class="fa fa-sign-out text-red"></i> <span>Thoát</span></a></li>
+                <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out text-red"></i> <span>Thoát</span></a></li>
                 <li><a href="#"><i class="fa fa-question-circle text-yellow"></i> <span>Trợ giúp</span></a></li>
             </ul>
 
         </section>
-        <!-- /.sidebar -->
-    </aside>        <!-- Content Wrapper. Contains page content -->
-    <!-- Content Wrapper. Contains page content -->
+    </aside>
     <div class="content-wrapper" style="min-height: 785px;">
 
             @yield('content')
@@ -208,26 +201,6 @@
 
     <!-- /.content-wrapper -->
 
-    <script>
-        google.charts.load('current', {'packages': ['corechart']});
-        google.charts.setOnLoadCallback(drawVisualization);
-
-        function drawVisualization() {
-            // Some raw data (not necessarily accurate)
-            var data = google.visualization.arrayToDataTable([
-                ['Month', 'Bán ra', 'Đơn hàng'],
-                ['01/2018', 0, 0], ['02/2018', 0, 0], ['03/2018', 0, 0], ['04/2018', 0, 0], ['05/2018', 0, 0], ['06/2018', 0, 0], ['07/2018', 0, 0], ['08/2018', 0, 0], ['09/2018', 0, 0], ['10/2018', 0, 0], ['11/2018', 0, 0], ['12/2018', 0, 0],
-            ]);
-
-            var options = {
-                title: 'Số lượng bán ra từ 01/2017 - 12/2017',
-                seriesType: 'bars'
-            };
-
-            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-    </script>
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs"><b>Version</b> 2.3.5</div>

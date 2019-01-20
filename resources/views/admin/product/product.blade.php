@@ -1,5 +1,6 @@
 @extends('admin.layout')
 @section('content')
+
     <section class="content-header">
         <h1><i class="glyphicon glyphicon-cd"></i> Danh sách sản phẩm</h1>
         <div class="breadcrumb">
@@ -160,26 +161,28 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="row">
-                                @if($product->lastPage()>1)
-                                    <div class="col-md-12 text-center">
-                                        <ul class="pagination">
-                                            <li class="hidden-xs"><a href="{{$product->url(1)}}"><<<</a></li>
-                                            @if($product->currentPage()!=1)
-                                                <li><a href="{{$product->url($product->currentPage()-1)}}">Prev</a></li>
-                                            @endif
-                                            @for($i=1; $i<=$product->lastPage();$i++)
-                                                <li class="{{($product->currentPage()==$i)? 'active':''}}"><a href="{{$product->url($i)}}">{{$i}}</a></li>
 
-                                            @endfor
-                                            @if($product->currentPage()!=$product->lastPage())
-                                                <li><a href="{{$pro->url($product->currentPage()+1)}}">Next</a></li>
-                                            @endif
-                                            <li class="hidden-xs"><a href="{{$product->url($product->lastPage())}}">>>> </a></li>
-                                        </ul>
-                                    </div>
-                                @endif
-                            </div>
+                                <div class="row">
+                                    @if($product->lastPage()>1)
+                                        <div class="col-md-12 text-center">
+                                            <ul class="pagination">
+                                                <li class="hidden-xs"><a href="{{$product->url(1)}}"><<<</a></li>
+                                                @if($product->currentPage()!=1)
+                                                    <li><a href="{{$product->url($product->currentPage()-1)}}">Prev</a></li>
+                                                @endif
+                                                @for($i=1; $i<=$product->lastPage();$i++)
+                                                    <li class="{{($product->currentPage()==$i)? 'active':''}}"><a href="{{$product->url($i)}}">{{$i}}</a></li>
+
+                                                @endfor
+                                                @if($product->currentPage()!=$product->lastPage())
+                                                    <li><a href="{{$product->url($product->currentPage()+1)}}">Next</a></li>
+                                                @endif
+                                                <li class="hidden-xs"><a href="{{$product->url($product->lastPage())}}">>>> </a></li>
+                                            </ul>
+                                        </div>
+                                    @endif
+                                </div>
+
                             <!-- /.ND -->
                         </div>
                     </div><!-- ./box-body -->
